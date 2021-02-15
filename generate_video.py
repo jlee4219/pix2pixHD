@@ -52,7 +52,6 @@ elif opt.start_from  == "video":
         video_utils.save_tensor(
             t,
             frame_dir + "/frame-%s.jpg" % str(frame_index).zfill(5),
-            text="original video",
         )
         frame_index += 1
 else:
