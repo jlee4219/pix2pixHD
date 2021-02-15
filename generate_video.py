@@ -1,4 +1,4 @@
-### Copyright (C) 2017 NVIDIA Corporation. All rights reserved. 
+### Copyright (C) 2017 NVIDIA Corporation. All rights reserved.
 ### Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 import os
 from options.test_options import TestOptions
@@ -89,7 +89,7 @@ for i in tqdm(range(opt.how_many)):
         next_frame = image_transforms.heat_seeking(next_frame, translation_level=opt.heat_seeking_lvl, zoom_level=opt.heat_seeking_lvl)
 
     video_utils.save_tensor(
-        next_frame, 
+        next_frame,
         frame_dir + "/frame-%s.jpg" % str(frame_index).zfill(5),
     )
     current_frame = next_frame
@@ -100,11 +100,24 @@ while os.path.isfile(video_path):
     video_path = video_path[:-4] + "-.mp4"
 
 video_utils.video_from_frame_directory(
-    frame_dir, 
-    video_path, 
-    framerate=opt.fps, 
+    frame_dir,
+    video_path,
+    framerate=opt.fps,
     crop_to_720p=True,
     reverse=False
 )
+
+if opt.loop:
+    video_path = output_dir + "/" + video_id + "-reversed.mp4"
+    while os.path.isfile(video_path):
+        video_path = video_path[:-4] + "-.mp4"
+
+    video_utils.video_from_frame_directory(
+        frame_dir,
+        video_path,
+        framerate=opt.fps * 3,
+        crop_to_720p=True,
+        reverse=True
+    )
 
 print("video ready:\n%s" % video_path)
